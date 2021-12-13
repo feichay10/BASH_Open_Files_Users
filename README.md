@@ -1,5 +1,5 @@
 # BASH_Open_Files_Users
-BASH script to show a list of users with the count of the number of open files that each user currently has
+BASH script to show a list of users with the count of the number of open files that each user currently has.
 
 1. Basic function and list of users with open files
 
@@ -30,4 +30,4 @@ Outputs a list of users that are specified with the -u | --user option. For exam
 
 5. Combine the options
 
-Also you can combine all the options available on the script
+Also you can combine all the options available on the script.
