@@ -59,11 +59,13 @@ prog_principal()
   printf "==========================|========================|==============|=============\n"
   for i in $USERS; do
     if [ "$filter" == "1" ]; then
-      printf "%-25s %-3s %-20s %-3s %-10s %-3s %-10s\n" "$i" "|" "$(lsof -u $i | awk '{print $9}' | grep -E $pattern$ | wc -l)" "|" "$(id -u $i)" "|" "$(ps -u $i --no-headers -o pid --sort=-time | head -n 1 | awk '{print $1}')"
+      printf "%-25s %-3s %-20s %-3s %-10s %-3s %-10s\n" "$i" "|" "$(lsof -u $i -e /run/user/1001/gvfs -p 2250 | awk '{print $9}' | grep -E $pattern$ | wc -l)" "|" "$(id -u $i)" "|" "$(ps -u $i --no-headers -o pid --sort=-time | head -n 1 | awk '{print $1}')"
     else
-      printf "%-25s %-3s %-20s %-3s %-10s %-3s %-10s\n" "$i" "|" "$(lsof -u $i | wc -l)" "|" "$(id -u $i)" "|" "$(ps -u $i --no-headers -o pid --sort=-time | head -n 1 | awk '{print $1}')"
+      printf "%-25s %-3s %-20s %-3s %-10s %-3s %-10s\n" "$i" "|" "$(lsof -u $i -e /run/user/1001/gvfs -p 2250 | wc -l)" "|" "$(id -u $i)" "|" "$(ps -u $i --no-headers -o pid --sort=-time | head -n 1 | awk '{print $1}')"
     fi
   done
+
+  echo
 }
 
 # Para desinstalar lsof: sudo apt-get --purge remove lsof
@@ -88,6 +90,7 @@ else
           pattern=$2
           echo "${TEXT_BOLD}${TEXT_YELLOW}Filtramos con el patron añadido: ${TEXT_RED}$pattern${TEXT_RESET}"
           shift
+          USERS=$USERS_CONNECT
         ;;
       -o | --off_line ) 
           offline=1
@@ -144,6 +147,7 @@ else
     done
   USERS=${arrInter[@]}
   fi
+  
 fi
 
 prog_principal
